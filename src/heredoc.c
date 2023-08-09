@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/09 14:45:41 by jonhan            #+#    #+#             */
+/*   Updated: 2023/08/09 15:52:12 by jonhan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*heredoc_file(void)
@@ -82,11 +94,10 @@ void	change_heredoc(t_cmd **pipeline)
 	}
 }
 
-void	read_heredoc(t_cmd **pipeline)
+void	read_heredoc(t_cmd **pipeline, int fd)
 {
 	t_cmd	*iter;
 	t_token	*red_iter;
-	int		fd;
 
 	iter = *pipeline;
 	while (iter)

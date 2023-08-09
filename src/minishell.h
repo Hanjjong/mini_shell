@@ -102,20 +102,41 @@ void	ft_echo(char **simple_cmd, t_list **environ, int fd);
 int		is_built_in(char **simple_cmd);
 int		run_cmd(t_cmd *cmd, t_list **environ, int flag, int is_p);
 t_list	*ft_getenvnode(t_list **environ, char *word);
+
+//export_util
+int		is_invalid_key(int c);
+int		print_export_err(char *str);
+char	*make_word(char *str);
+int		is_valid_export_arg(char *str);
+void	print_export_list(t_list **environ, int fd);
+
 //heredoc
 // void	change_heredoc(t_cmd *cmd);
 void	change_heredoc(t_cmd **pipeline);
-void	read_heredoc(t_cmd **pipeline);
+void	read_heredoc(t_cmd **pipeline, int fd);
+
 // void	unlink_temp_files(t_cmd **pipeline);
 void	unlink_temp_files(t_cmd *cmd);
 
 int		init_redir(t_cmd *cmd);
 void	ft_exec(t_cmd **pipeline, t_list **environ);
 
+//pipexline
+void	first_child(t_exec arg, t_cmd *cmd, t_list **env);
+void	middle_child(t_exec arg, t_cmd *cmd, t_list **env);
+void	last_child(t_exec arg, t_cmd *cmd, t_list **env);
+void	wait_child(pid_t pid, int count);
+void	evecve_error(char *valid_cmd, char *simple_cmd);
+char	**make_envp(t_list **env);
+
+//pipexutil
+void	init_exec(t_exec *exec, t_cmd **pipeline, t_list **env);
+void	close_fd(t_exec *arg);
 int		count_pipe(t_cmd **pipeline);
 void	while_pipe(t_cmd **pipeline);
 void	pipexline(t_cmd **pipeline, t_list **env);
 char	*valid(char **path, char *command);
+void	send_sig(void);
 
 char	*get_pwd(void);
 

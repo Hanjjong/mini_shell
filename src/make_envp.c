@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   make_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/09 13:47:51 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 13:47:53 by jonhan           ###   ########.fr       */
+/*   Created: 2023/08/08 20:58:30 by jonhan            #+#    #+#             */
+/*   Updated: 2023/08/09 14:44:57 by jonhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(char **simple_cmd, t_list **environ, int fd)
+char	**make_envp(t_list **env)
 {
 	t_list	*iter;
+	char	**ret;
+	int		size;
 
-	error_status = 0;
-	if (!simple_cmd)
-		return ;
-	iter = *environ;
+	iter = *env;
+	size = 0;
 	while (iter)
 	{
-		if (ft_strchr(iter->content, '='))
-			ft_putendl_fd(iter->content, fd);
+		size++;
 		iter = iter->next;
 	}
+	ret = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!ret)
+		exit(1);
+	iter = *env;
+	size = 0;
+	while (iter)
+	{
+		ret[size++] = ft_strdup(iter->content);
+		iter = iter->next;
+	}
+	ret[size] = NULL;
+	return (ret);
 }

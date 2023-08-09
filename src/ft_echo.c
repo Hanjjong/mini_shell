@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/09 13:45:06 by jonhan            #+#    #+#             */
+/*   Updated: 2023/08/09 13:47:40 by jonhan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_more_newline(char **simple_cmd)
@@ -34,13 +46,12 @@ void	ft_echo(char **simple_cmd, t_list **environ, int fd)
 		}
 		return ;
 	}
-	i = 1;
-	while (simple_cmd[i] != NULL)
+	i = 0;
+	while (simple_cmd[++i] != NULL)
 	{
 		ft_putstr_fd(simple_cmd[i], fd);
 		if (simple_cmd[i + 1] != NULL)
 			ft_putstr_fd(" ", fd);
-		i++;
 	}
 	write(fd, "\n", 1);
 }
