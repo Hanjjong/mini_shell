@@ -12,28 +12,20 @@
 
 #include "minishell.h"
 
-void	redir_error(t_cmd *cmd)
+void	execute_valid_cmd(t_exec arg, t_cmd *cmd, char **envp)
 {
-	unlink_temp_files(cmd);
-	exit(1);
-}
+	char	*valid_cmd;
 
-void	run_built_in(t_cmd *cmd, t_list **env)
-{
-	run_cmd(cmd, env, is_built_in(cmd->simple_cmd), 0);
-	exit(error_status);
-}
+	valid_cmd = valid(arg.path, cmd->simple_cmd[0]);
+	if (!valid_cmd && !access(cmd->simple_cmd[0], F_OK))
+		valid_cmd = cmd->simple_cmd[0];
+	if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
+		evecve_error(valid_cmd, cmd->simple_cmd[0]);
 
-void	close_fd_and_unlink(t_exec *arg, t_cmd *cmd)
-{
-	close(arg->fds_next[0]);
-	close(arg->fds_next[1]);
-	unlink_temp_files(cmd);
 }
 
 void	first_child(t_exec arg, t_cmd *cmd, t_list **env)
 {
-	char	*valid_cmd;
 	char	**envp;
 
 	envp = make_envp(env);
@@ -53,21 +45,15 @@ void	first_child(t_exec arg, t_cmd *cmd, t_list **env)
 		run_built_in(cmd, env);
 	if (cmd->simple_cmd[0] == NULL)
 		exit(error_status);
-	valid_cmd = valid(arg.path, cmd->simple_cmd[0]);
-	if (!valid_cmd && !access(cmd->simple_cmd[0], F_OK))
-		valid_cmd = cmd->simple_cmd[0];
-	if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
-		evecve_error(valid_cmd, cmd->simple_cmd[0]);
+	execute_valid_cmd(arg, cmd, envp);
 }
 
 
 void	middle_child(t_exec arg, t_cmd *cmd, t_list **env)
 {
-	char	*valid_cmd;
 	char	**envp;
 
 	envp = make_envp(env);
-	close(arg.fds_next[0]);
 	close(arg.fds_prev[1]);
 	if (init_redir(cmd) == 1)
 		redir_error(cmd);
@@ -81,27 +67,19 @@ void	middle_child(t_exec arg, t_cmd *cmd, t_list **env)
 		dup2(arg.fds_prev[0], STDIN_FILENO);
 	if (cmd->io_fd[0] != 0)
 		close(cmd->io_fd[0]);
-	else
-		close(arg.fds_prev[0]);
 	if (cmd->io_fd[1] != 1)
 		close(cmd->io_fd[1]);
-	else
-		close(arg.fds_next[1]);
-	unlink_temp_files(cmd);
+	close(arg.fds_prev[0]);
+	close_fd_and_unlink(&arg, cmd);
 	if (is_built_in(cmd->simple_cmd) > -1)
 		run_built_in(cmd, env);
 	if (cmd->simple_cmd[0] == NULL)
 		exit(error_status);
-	valid_cmd = valid(arg.path, cmd->simple_cmd[0]);
-	if (!valid_cmd && !access(cmd->simple_cmd[0], F_OK))
-		valid_cmd = cmd->simple_cmd[0];
-	if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
-		evecve_error(valid_cmd, cmd->simple_cmd[0]);
+	execute_valid_cmd(arg, cmd, envp);
 }
 
 void	last_child(t_exec arg, t_cmd *cmd, t_list **env)
 {
-	char	*valid_cmd;
 	char	**envp;
 
 	envp = make_envp(env);
@@ -124,11 +102,7 @@ void	last_child(t_exec arg, t_cmd *cmd, t_list **env)
 		run_built_in(cmd, env);
 	if (cmd->simple_cmd[0] == NULL)
 		exit(error_status);
-	valid_cmd = valid(arg.path, cmd->simple_cmd[0]);
-	if (!valid_cmd && !access(cmd->simple_cmd[0], F_OK))
-		valid_cmd = cmd->simple_cmd[0];
-	if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
-		evecve_error(valid_cmd, cmd->simple_cmd[0]);
+	execute_valid_cmd(arg, cmd, envp);
 }
 
 void	wait_child(pid_t pid, int count)

@@ -30,7 +30,7 @@ int	update_pwd(t_list ***environ)
 	if (getcwdstr == NULL)
 	{
 		ft_putstr_fd("cd: error retrieving current directory: \
-			 getcwd: cannot access parent ", 2);
+			getcwd: cannot access parent ", 2);
 		perror("directories");
 		return (1);
 	}

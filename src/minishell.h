@@ -128,6 +128,9 @@ void	last_child(t_exec arg, t_cmd *cmd, t_list **env);
 void	wait_child(pid_t pid, int count);
 void	evecve_error(char *valid_cmd, char *simple_cmd);
 char	**make_envp(t_list **env);
+void	redir_error(t_cmd *cmd);
+void	run_built_in(t_cmd *cmd, t_list **env);
+void	close_fd_and_unlink(t_exec *arg, t_cmd *cmd);
 
 //pipexutil
 void	init_exec(t_exec *exec, t_cmd **pipeline, t_list **env);
