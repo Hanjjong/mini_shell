@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_redir.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 11:18:58 by phan              #+#    #+#             */
+/*   Updated: 2023/08/13 14:30:38 by phan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	redir_lsr(t_cmd *cmd, t_token *redir_iter)
@@ -18,7 +30,8 @@ int	redir_grt(t_cmd *cmd, t_token *redir_iter)
 {
 	if (cmd->io_fd[1] != 1)
 		close(cmd->io_fd[1]);
-	cmd->io_fd[1] = open(redir_iter->content, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	cmd->io_fd[1] = \
+		open(redir_iter->content, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (cmd->io_fd[1] < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -32,7 +45,8 @@ int	redit_d_grt(t_cmd *cmd, t_token *redir_iter)
 {
 	if (cmd->io_fd[1] != 1)
 		close(cmd->io_fd[1]);
-	cmd->io_fd[1] = open(redir_iter->content, O_APPEND | O_WRONLY | O_CREAT, 0644);
+	cmd->io_fd[1] = \
+		open(redir_iter->content, O_APPEND | O_WRONLY | O_CREAT, 0644);
 	if (cmd->io_fd[1] < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);

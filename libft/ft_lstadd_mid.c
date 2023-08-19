@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_mid.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 11:46:38 by phan              #+#    #+#             */
+/*   Updated: 2023/08/10 11:46:46 by phan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_lstadd_mid(t_list *target_node, t_list **new_lst)
@@ -6,7 +18,6 @@ void	ft_lstadd_mid(t_list *target_node, t_list **new_lst)
 	t_list	*target_next;
 	t_list	*cpy_lst;
 	t_list	*last;
-
 
 	if (!*new_lst)
 		return ;

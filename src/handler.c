@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/09 13:48:40 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 13:48:40 by jonhan           ###   ########.fr       */
+/*   Created: 2023/08/10 10:33:54 by phan              #+#    #+#             */
+/*   Updated: 2023/08/10 11:39:20 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	p_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	error_status = 1;
+	g_error_status = 1;
 }
 
 void	c_handler(int sig)

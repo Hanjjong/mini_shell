@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/09 13:48:27 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 13:48:27 by jonhan           ###   ########.fr       */
+/*   Created: 2023/08/10 10:32:05 by phan              #+#    #+#             */
+/*   Updated: 2023/08/10 11:39:12 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_pwd(char **simple_cmd, t_list **environ, int fd)
 		ft_putstr_fd(simple_cmd[1], 2);
 		ft_putendl_fd(": invalid option ", 2);
 		ft_putendl_fd("pwd: no option", 2);
-		error_status = 1;
+		g_error_status = 1;
 		return ;
 	}
 	str = NULL;

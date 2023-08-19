@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:48:33 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 13:48:34 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/11 15:35:30 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,13 @@ t_list	*ft_getenvnode(t_list **environ, char *word)
 	while (iter)
 	{
 		if (!ft_strncmp(iter->content, new_word, ft_strlen(new_word)))
+		{
+			free(new_word);
 			return (iter);
+		}
 		iter = iter->next;
 	}
+	free(new_word);
 	return (NULL);
 }
 
@@ -43,7 +47,7 @@ void	ft_unset(char **simple_cmd, t_list **environ, int fd)
 	(void)fd;
 	i = 0;
 	tmp = NULL;
-	error_status = 0;
+	g_error_status = 0;
 	while (simple_cmd[++i])
 	{
 		tmp = ft_getenvnode(environ, simple_cmd[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 20:58:30 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 14:44:57 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/10 11:34:28 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,16 @@ char	**make_envp(t_list **env)
 	}
 	ret[size] = NULL;
 	return (ret);
+}
+
+t_list	*dup_envp(char **envp)
+{
+	t_list	*environ;
+	int		i;
+
+	environ = NULL;
+	i = -1;
+	while (envp[++i])
+		ft_lstadd_back(&environ, ft_lstnew(ft_strdup(envp[i])));
+	return (environ);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:48:11 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 14:40:52 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/14 18:02:25 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,16 @@ void	ft_export(char **simple_cmd, t_list **environ, int fd)
 		word = make_word(simple_cmd[i]);
 		if (!word)
 			continue ;
-		if (is_valid_export_arg(word))
+		if (is_valid_export_arg(word, simple_cmd[i]))
 		{
 			tmp = ft_getenvnode(environ, word);
 			if (tmp)
 				ft_lstdel_mid(environ, tmp);
 			ft_lstadd_back(environ, ft_lstnew(ft_strdup(simple_cmd[i])));
-			error_status = 0;
+			g_error_status = 0;
 		}
 		else
-			error_status = 1;
+			g_error_status = 1;
 		free(word);
 	}
 }
-
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_analyzer.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 10:37:39 by phan              #+#    #+#             */
+/*   Updated: 2023/08/11 14:50:42 by phan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	identify_token_type(t_list **token_list, t_token **type_list)
@@ -56,5 +68,6 @@ int	ft_error(t_token **type_list, char *content)
 	ft_putstr_fd(SYNTAX_ERROR_MSG, 2);
 	ft_putendl_fd(content, STDERR_FILENO);
 	ft_tokenclear(type_list, free);
+	g_error_status = SYNTAX_ERROR;
 	return (SYNTAX_ERROR);
 }

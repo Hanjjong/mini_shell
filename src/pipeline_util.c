@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:26:46 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/08 20:59:31 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/13 14:31:28 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	close_fd(t_exec *arg)
 		close(arg->fds_next[1]);
 		close(arg->fds_next[0]);
 	}
+	if (arg->path)
+		free_all(arg->path);
 }
 
 void	send_sig(void)
@@ -40,20 +42,20 @@ void	evecve_error(char *valid_cmd, char *simple_cmd)
 {
 	if (valid_cmd)
 	{
-		if (access(valid_cmd, X_OK) < 0)
+		if (access(valid_cmd, F_OK) < 0)
+			print_access_error(valid_cmd, 127);
+		else if (access(valid_cmd, X_OK) < 0)
+			print_access_error(valid_cmd, 126);
+		else if (opendir(valid_cmd) != 0)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			perror(valid_cmd);
-			exit(126);
+			if (ft_strchr(valid_cmd, '/'))
+				print_execve_error(valid_cmd, ": is a directory", 126);
+			else
+				print_execve_error(valid_cmd, ": command not found", 127);
 		}
 		else
 			exit(0);
 	}
 	else
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(simple_cmd, 2);
-		ft_putendl_fd(": command not found", 2);
-		exit(127);
-	}
+		print_execve_error(simple_cmd, ": command not found", 127);
 }

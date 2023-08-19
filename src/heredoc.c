@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 14:45:41 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 15:52:12 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/11 20:26:01 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,14 @@ void	heredoc_readline(int fd, char *lim)
 	{
 		input = readline("heredoc> ");
 		if (!input)
+		{
+			free(lim);
 			return ;
+		}
 		if (!ft_strcmp(input, lim))
 		{
 			free(input);
+			free(lim);
 			return ;
 		}
 		else

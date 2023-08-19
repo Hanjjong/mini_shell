@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:25:56 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 18:37:26 by jonhan           ###   ########.fr       */
+/*   Updated: 2023/08/11 20:22:07 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fork_heredoc(t_cmd **pipeline)
+void	fork_heredoc(t_cmd **pipeline, t_exec *exec)
 {
 	pid_t	pid;
 	int		status;
@@ -32,13 +32,15 @@ void	fork_heredoc(t_cmd **pipeline)
 	}
 	if (waitpid(-1, &status, 0) > 0)
 	{
-		error_status = WEXITSTATUS(status);
+		g_error_status = WEXITSTATUS(status);
+		if (g_error_status && exec->path)
+			free_all(exec->path);
 	}
 }
 
 int	if_pipe_error(t_cmd *iter, t_exec *exec)
 {
-	if (error_status != 0)
+	if (g_error_status != 0)
 	{
 		while (iter)
 		{
@@ -92,10 +94,10 @@ void	pipexline(t_cmd **pipeline, t_list **env)
 	t_exec	exec;
 	t_cmd	*iter;
 
-	error_status = 0;
+	g_error_status = 0;
 	iter = *pipeline;
 	init_exec(&exec, pipeline, env);
-	fork_heredoc(pipeline);
+	fork_heredoc(pipeline, &exec);
 	if (if_pipe_error(iter, &exec))
 		return ;
 	while (exec.repeat_fork < exec.count)

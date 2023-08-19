@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/09 13:47:51 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/09 13:47:53 by jonhan           ###   ########.fr       */
+/*   Created: 2023/08/10 10:33:17 by phan              #+#    #+#             */
+/*   Updated: 2023/08/10 11:38:52 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_env(char **simple_cmd, t_list **environ, int fd)
 {
 	t_list	*iter;
 
-	error_status = 0;
+	g_error_status = 0;
 	if (!simple_cmd)
 		return ;
 	iter = *environ;

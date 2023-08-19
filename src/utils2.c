@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/10 11:20:49 by phan              #+#    #+#             */
-/*   Updated: 2023/08/11 17:01:12 by phan             ###   ########.fr       */
+/*   Created: 2023/08/10 11:20:36 by phan              #+#    #+#             */
+/*   Updated: 2023/08/13 14:31:41 by phan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_token_new(int type, void *content)
+t_cmd	*ft_cmd_new(void)
 {
-	t_token	*tmp;
+	t_cmd	*tmp;
 
-	tmp = (t_token *)malloc(sizeof(t_token));
+	tmp = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!tmp)
 		exit(1);
-	tmp->type = type;
-	tmp->content = content;
-	tmp->temp = NULL;
+	tmp->io_fd[0] = 0;
+	tmp->io_fd[1] = 1;
+	tmp->simple_cmd = NULL;
+	tmp->redir_header = NULL;
 	tmp->next = NULL;
 	tmp->prev = NULL;
 	return (tmp);
 }
 
-void	ft_tokenadd_back(t_token **lst, t_token *new)
+void	ft_cmdadd_back(t_cmd **lst, t_cmd *new)
 {
-	t_token	*tmp;
+	t_cmd	*tmp;
 
 	if (!new)
 		return ;
@@ -46,43 +47,25 @@ void	ft_tokenadd_back(t_token **lst, t_token *new)
 	new->prev = tmp;
 }
 
-void	ft_tokendelone(t_token *lst, void (*del)(void *))
+void	ft_cmdclear(t_cmd **lst, void (*del)(void *))
 {
-	if (!lst || !del)
-		return ;
-	del(lst->content);
-	free(lst);
-}
-
-void	ft_tokendel_mid(t_token **lst, t_token *node)
-{
-	t_token	*prev;
-	t_token	*next;
-
-	prev = node->prev;
-	next = node->next;
-	if (prev)
-		prev->next = next;
-	else
-		*lst = next;
-	if (next)
-		next->prev = prev;
-	ft_tokendelone(node, free);
-}
-
-void	ft_tokenclear(t_token **lst, void (*del)(void *))
-{
-	t_token	*tmp;
+	t_cmd	*tmp;
 
 	if (!lst || !del)
 		return ;
 	while (*lst)
 	{
 		tmp = *lst;
-		del((*lst)->content);
-		del((*lst)->temp);
+		ft_tokenclear(&((*lst)->redir_header), del);
+		free_all((*lst)->simple_cmd);
 		*lst = tmp->next;
 		free(tmp);
 	}
 	lst = NULL;
+}
+
+void	sigterm_exit(void)
+{
+	ft_putendl_fd("exit", 1);
+	exit(g_error_status);
 }

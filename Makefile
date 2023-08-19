@@ -15,40 +15,43 @@ LINE_CLEAR  =   "\x1b[1A\x1b[M"
 
 LIBFT		=	./libft/libft.a
 SRCDIR		=	./src
-SRC			=	dequotenizer.c main.c struct_cmd.c utils.c utils_2.c export_util.c child_util.c \
-				expansion.c syntax_analyzer.c tokenizer.c is_built_in.c  make_envp.c\
-				heredoc.c init_redir.c count_pipe.c pipeline.c pipeline_util.c child_proc.c\
-				ft_cd.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c \
-				handler.c
+SRC			=	dequotenizer.c expand.c expand_utils.c expand_utils2.c hello.c\
+				export_util.c ft_cd.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c \
+				handler.c heredoc.c init_redir.c is_built_in.c \
+				main.c make_envp.c \
+				pipeline_util.c pipeline_utils2.c pipeline.c \
+				struct_cmd_utils.c struct_cmd.c syntax_analyzer.c \
+				tokenizer.c utils.c utils2.c utils3.c utils4.c utils5.c \
+				child_proc.c child_util.c
 SRC			:=	$(addprefix $(SRCDIR)/, $(SRC))
 OBJ			=	$(SRC:.c=.o)
 
 NAME		= minishell
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -Qunused-arguments
-# LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include -lreadline
-LDFLAGS		= -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include -lreadline
-LIBFLAGS	= -Llibft -lft -Ilibft
+CFLAGS		= -Wall -Wextra -Werror
+LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
+LIBFLAGS	= -Llibft -lft 
+INCLUDES	= -Ilibft -I/Users/$(USER)/.brew/opt/readline/include
 
 all:		$(NAME)
 
 $(NAME): 	$(OBJ) $(LIBFT)
-		@$(CC) $(LIBFLAGS) $(LDFLAGS) $(OBJ) -o $(NAME) -g -fsanitize=address
+		@$(CC) $(LIBFLAGS) $(LDFLAGS) -g $(OBJ) -o $(NAME)
 		@echo $(GREEN)"minishell made." $(EOC)
 
 $(LIBFT):
 		@make --no-print-directory -C ./libft bonus
 
 %.o: 		%.c
-		@$(CC) $(CFLAGS) $(LIBFLAGS) $(LDFLAGS) -c $< -o $@
+		@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-		@cd libft; make clean
+		@make --no-print-directory -C ./libft clean
 		@$(RM) $(OBJ)
 		@echo $(GREEN)"cleaned." $(EOC)
 
 fclean:		clean
-		@cd libft; make fclean
+		@make --no-print-directory -C ./libft fclean
 		@$(RM) $(NAME)
 		@echo $(GREEN)"fcleaned." $(EOC)
 
