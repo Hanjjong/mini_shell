@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 10:34:07 by phan              #+#    #+#             */
-/*   Updated: 2023/08/10 11:26:30 by phan             ###   ########.fr       */
+/*   Updated: 2023/09/02 21:27:02 by jonhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*valid(char **path, char *command)
 	char	*tmp;
 	char	*path_cmd;
 	int		i;
+	// struct stat	st;
+
 
 	i = 0;
 	if (ft_strchr(command, '/'))

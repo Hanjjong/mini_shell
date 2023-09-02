@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 14:38:14 by phan              #+#    #+#             */
-/*   Updated: 2023/08/14 18:05:45 by phan             ###   ########.fr       */
+/*   Updated: 2023/09/02 21:11:22 by jonhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <termios.h>
+# include <sys/stat.h>
 
 # define SYNTAX_SUCCESS	0
 # define SYNTAX_ERROR	258

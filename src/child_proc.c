@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_proc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:07:33 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/12 20:06:07 by phan             ###   ########.fr       */
+/*   Updated: 2023/09/02 21:30:38 by jonhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 void	execute_valid_cmd(t_exec arg, t_cmd *cmd, char **envp)
 {
 	char	*valid_cmd;
+	struct stat	st;
+
 
 	valid_cmd = valid(arg.path, cmd->simple_cmd[0]);
-	if (!valid_cmd && !access(cmd->simple_cmd[0], F_OK | X_OK))
-		valid_cmd = cmd->simple_cmd[0];
-	if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
+	stat(cmd->simple_cmd[0], &st);
+	if (!valid_cmd)
+	{
+		print_execve_error(cmd->simple_cmd[0], ": command not found", 127);
+	}
+	else if (execve(valid_cmd, cmd->simple_cmd, envp) < 0)
 		evecve_error(valid_cmd, cmd->simple_cmd[0]);
 }
 

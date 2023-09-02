@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: phan <phan@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: jonhan <jonhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 17:26:46 by jonhan            #+#    #+#             */
-/*   Updated: 2023/08/13 14:31:28 by phan             ###   ########.fr       */
+/*   Updated: 2023/09/02 21:29:41 by jonhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,24 @@ void	send_sig(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
+
+
 void	evecve_error(char *valid_cmd, char *simple_cmd)
 {
-	if (valid_cmd)
+	struct stat	st;
+
+	stat(simple_cmd, &st);
+	if (S_ISDIR(st.st_mode))
+	{
+		print_execve_error(simple_cmd, ": is a directory", 126);
+	}
+	else
 	{
 		if (access(valid_cmd, F_OK) < 0)
 			print_access_error(valid_cmd, 127);
 		else if (access(valid_cmd, X_OK) < 0)
 			print_access_error(valid_cmd, 126);
-		else if (opendir(valid_cmd) != 0)
-		{
-			if (ft_strchr(valid_cmd, '/'))
-				print_execve_error(valid_cmd, ": is a directory", 126);
-			else
-				print_execve_error(valid_cmd, ": command not found", 127);
-		}
 		else
 			exit(0);
 	}
-	else
-		print_execve_error(simple_cmd, ": command not found", 127);
 }
